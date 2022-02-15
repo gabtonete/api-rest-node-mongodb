@@ -1,0 +1,153 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Devaria API NodeJS"
+    },
+    "basePath": "/api",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "summary": "Faz autenticação do usuário e devolve o token de acesso",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#definitions/LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/LoginResponse200"
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/Response400"
+                        }
+                    }
+                }
+            }
+        },
+        "/usuario": {
+            "post": {
+                "summary": "Faz cadastro do usuário no sistema",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#definitions/UsuarioCadastroRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/UsuarioResponse200"
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/Response400"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "UsuarioCadastroRequest": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "example": "gabriel"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "admin@admin.com"
+                },
+                "senha": {
+                    "type": "string",
+                    "example": "senha123"
+                }
+            }
+        },
+        "UsuarioResponse200": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "example": "gabriel"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "admin@admin.com"
+                },
+                "senha": {
+                    "type": "string",
+                    "example": "senha123"
+                }
+            }
+        },
+        "LoginRequest": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string",
+                    "example": "admin@admin.com"
+                },
+                "senha": {
+                    "type": "string",
+                    "example": "senha123"
+                }
+            }
+        },
+        "LoginResponse200": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "nome": {
+                    "type": "string",
+                    "example": "gabriel"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "admin@admin.com"
+                },
+                "token": {
+                    "type": "string",
+                    "example": "s0cm02r8gv8cjhgwlkj2e3"
+                }
+            }
+        },
+        "Response400": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "number",
+                    "example": "400"
+                },
+                "erro": {
+                    "type": "string",
+                    "example": "Parâmetros de entrada inválidos"
+                }
+            }
+        }
+    }
+}
