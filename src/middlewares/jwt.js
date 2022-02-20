@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 const UsuarioRepository = require('../repositories/impl/MongoDBUsuarioRepository');
 
 // Define quais rotas serão públicas para o programa
-const rotasPublicas = [
-    {
+const rotasPublicas = [{
         url: '/api/login',
         method: 'POST'
     },
@@ -27,19 +26,16 @@ module.exports = (req, res, next) => {
     // Utilizando o request, busca o URL e o método da rota, se for igual a algum valor das rotasPublicas, será retornado para rotaPublica
     const rotaPublica = rotasPublicas.find(rota =>
         (
-            rota.url === req.url
-            || (
-                rota.url.indexOf('*') !== -1
-                && req.url.indexOf(rota.url.replace('*', '')) !== -1
+            rota.url === req.url ||
+            (
+                rota.url.indexOf('*') !== -1 &&
+                req.url.indexOf(rota.url.replace('*', '')) !== -1
             )
-        )
-        && (
-            rota.method === req.method.toUpperCase()
-            || req.method.toUpperCase() === 'OPTIONS'
-        )
+        ) &&
+        (rota.method === req.method.toUpperCase())
     )
 
-    if (rotaPublica) {
+    if (rotaPublica || req.method.toUpperCase() === 'OPTIONS') {
         req.logger.info('rota pública, acesso liberado');
         return next();
     }
@@ -63,7 +59,7 @@ module.exports = (req, res, next) => {
     }
 
     // O método verify do jwt pega o token e a  chave secreta e o decodifica
-    jwt.verify(token, process.env.SECRET_JWT, async (erro, decoded) => {
+    jwt.verify(token, process.env.SECRET_JWT, async(erro, decoded) => {
         if (erro) {
             req.logger.error('erro ao decodificar o token jwt', 'token=', token);
             return res.status(401).json({
